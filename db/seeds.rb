@@ -3,12 +3,13 @@ require 'faker'
 User.destroy_all
 List.destroy_all
 Task.destroy_all
-
+i = 0
  5.times do
+  i += 1
   user = User.new(
     name:     Faker::Name.name,
-    email:    Faker::Internet.email,
-    password: Faker::Lorem.characters(10)
+    email:    "user#{i}@example.com",
+    password: 'helloworld'
   )
   user.skip_confirmation!
   user.save!
@@ -24,11 +25,13 @@ users = User.all
    )
  end
  lists = List.all
- 
+ i = 0
  100.times do
+  i += 1
    Task.create!(
      list: lists.sample,
-     body: Faker::Lorem.paragraph
+     body: Faker::Lorem.paragraph,
+     title: "Task #{i}" 
    )
  end
 
@@ -36,6 +39,14 @@ users = User.all
   email: 'priceat@gmail.com',
   password: 'helloworld'
   )
+
+ admin = User.new(
+  name: 'admin',
+  email: 'admin@example.com',
+  password: 'helloworld'
+ )
+ admin.skip_confirmation!
+ puts "Admin User Created" if admin.save
  
  puts "Seed finished"
  puts "#{User.count} users created"
